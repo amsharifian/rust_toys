@@ -2,6 +2,8 @@ extern crate chrono;
 extern crate lettre;
 extern crate lettre_email;
 extern crate mime;
+extern crate log;
+extern crate simple_logging;
 
 use chrono::prelude::*;
 use chrono::Duration;
@@ -13,15 +15,25 @@ use lettre_email::Email;
 use std::path::Path;
 
 use lettre::smtp::authentication::IntoCredentials;
+use log::{info, trace, warn};
+use log::LevelFilter;
+use log::Level;
 
 
-fn test(){
-    println!("This is a test!");
+// use simple_logging::log::LevelFilter;
+
+fn log(){
+    // simple_logging::init().unwrap();
+    simple_logging::log_to_file("/tmp/dandelion_manage.log", LevelFilter::Info);
+    info!("This will be logged.");
+
+
 }
 
 
 fn sendEmail(){
 
+    env_logger::init();
     let smtp_address = "smtp.gmail.com";
     let user_name = "am.sharifian@gmail.com";
     let pass = "fujaibuoymyjruyg";
@@ -66,7 +78,8 @@ fn main() {
     println!("Tomorrow: {}", tomorrow.to_string());
 
     let mut cnt = 0;
-    sendEmail();
+    log();
+    // sendEmail();
     // loop{
     //     sleep(time::Duration::new(2,0));
     //     if cnt == 5 {   
